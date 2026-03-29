@@ -10,12 +10,13 @@ const VaultPreview = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-12 text-center"
+          transition={{ duration: 0.6 }}
+          className="mb-14 text-center"
         >
-          <h2 className="mb-4 font-display text-3xl font-bold text-foreground sm:text-4xl">
+          <h2 className="mb-4 font-display text-3xl font-bold text-foreground sm:text-5xl">
             Investment Vaults
           </h2>
-          <p className="mx-auto max-w-lg text-muted-foreground">
+          <p className="mx-auto max-w-lg text-lg text-muted-foreground">
             Choose from curated strategies designed for different risk appetites and market conditions.
           </p>
         </motion.div>
