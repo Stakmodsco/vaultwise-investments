@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Bell, User, LayoutDashboard, Vault, Wallet } from 'lucide-react';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { formatUSD } from '@/lib/vaults';
-import Icon3D from '@/components/ui/Icon3D';
+import vaultxLogo from '@/assets/vaultx-logo.png';
 
 const Navbar = () => {
   const location = useLocation();
@@ -20,8 +20,8 @@ const Navbar = () => {
         className="fixed top-0 left-0 right-0 z-50 glass"
       >
         <div className="container mx-auto flex items-center justify-between px-6 py-3">
-          <Link to="/" className="flex items-center gap-2.5">
-            <Icon3D icon={Vault} variant="blue" size="sm" />
+          <Link to="/" className="flex items-center gap-1.5">
+            <img src={vaultxLogo} alt="VaultX" className="h-9 w-9 object-contain" />
             <span className="font-display text-xl font-bold text-foreground">VaultX</span>
           </Link>
 
