@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root, .dark {
     --background: 215 30% 6%;
     --foreground: 210 30% 93%;
 
@@ -68,6 +68,68 @@
     --sidebar-border: 215 15% 20%;
     --sidebar-ring: 217 100% 65%;
   }
+
+  .light {
+    --background: 210 20% 97%;
+    --foreground: 215 30% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 30% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 30% 12%;
+
+    --primary: 217 100% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 15% 92%;
+    --secondary-foreground: 215 20% 30%;
+
+    --muted: 215 12% 94%;
+    --muted-foreground: 215 10% 50%;
+
+    --accent: 168 80% 38%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 15% 85%;
+    --input: 215 15% 85%;
+    --ring: 217 100% 55%;
+
+    --vault-low: 142 71% 40%;
+    --vault-medium: 43 96% 48%;
+    --vault-high: 0 84% 55%;
+    --vault-very-low: 168 80% 36%;
+    --vault-purple: 258 90% 58%;
+
+    --surface-elevated: 0 0% 100%;
+
+    --glass-bg: 0 0% 100% / 0.85;
+    --glass-border: 215 15% 85% / 0.6;
+
+    --gradient-primary: linear-gradient(135deg, hsl(217 100% 55%), hsl(168 80% 38%));
+    --gradient-hero: radial-gradient(ellipse 80% 50% at 50% -20%, hsl(217 100% 55% / 0.08), transparent);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100% / 0.95) 0%, hsl(215 15% 96% / 0.85) 100%);
+
+    --shadow-glow-blue: 0 0 30px -8px hsl(217 100% 55% / 0.2);
+    --shadow-glow-green: 0 0 30px -8px hsl(168 80% 38% / 0.2);
+    --shadow-card: 0 2px 12px -2px hsl(215 20% 60% / 0.12);
+    --shadow-card-hover: 0 8px 30px -8px hsl(217 100% 55% / 0.12);
+
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 20% 30%;
+    --sidebar-primary: 217 100% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 15% 92%;
+    --sidebar-accent-foreground: 215 20% 30%;
+    --sidebar-border: 215 15% 85%;
+    --sidebar-ring: 217 100% 55%;
+  }
 }
 
 @layer base {
@@ -94,10 +156,10 @@
   }
 
   .glass-card {
-    background: linear-gradient(135deg, hsl(215 28% 12% / 0.85) 0%, hsl(215 28% 8% / 0.65) 100%);
+    background: var(--gradient-card);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid hsl(215 15% 22% / 0.5);
+    border: 1px solid hsl(var(--glass-border));
     box-shadow: var(--shadow-card);
     transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
   }

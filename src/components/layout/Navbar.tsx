@@ -4,6 +4,8 @@ import { Bell, User, LayoutDashboard, Vault, Wallet } from 'lucide-react';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { formatUSD } from '@/lib/vaults';
 import vaultxLogo from '@/assets/vaultx-logo.png';
+import CryptoTicker from './CryptoTicker';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const location = useLocation();
@@ -51,6 +53,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {!isLanding && (
               <>
                 <div className="hidden items-center gap-1.5 rounded-xl bg-secondary/70 px-4 py-2 text-sm font-semibold text-foreground sm:flex">
@@ -77,6 +80,9 @@ const Navbar = () => {
           </div>
         </div>
       </motion.nav>
+
+      {/* Crypto Ticker */}
+      {!isLanding && <CryptoTicker />}
 
       {/* Mobile Bottom Navigation */}
       {!isLanding && (
