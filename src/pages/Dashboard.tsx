@@ -275,17 +275,16 @@ const Dashboard = () => {
               {transactions.slice(0, 10).map((tx) => (
                 <div key={tx.id} className="flex items-center justify-between border-b border-border/30 px-5 py-4 last:border-0 transition-colors duration-200 hover:bg-secondary/30">
                   <div className="flex items-center gap-3">
-                    <div className={`flex h-9 w-9 items-center justify-center rounded-xl text-sm ${
-                      tx.type === 'deposit' ? 'icon-3d-green' :
-                      tx.type === 'invest' ? 'icon-3d-blue' :
-                      tx.type === 'redeem' ? 'icon-3d-amber' :
-                      'icon-3d-red'
-                    }`}>
-                      {tx.type === 'deposit' ? <ArrowDownRight size={14} color="white" /> :
-                       tx.type === 'invest' ? <ArrowUpRight size={14} color="white" /> :
-                       tx.type === 'redeem' ? <ArrowDownRight size={14} color="white" /> :
-                       <ArrowUpRight size={14} color="white" />}
-                    </div>
+                    <Icon3D
+                      icon={tx.type === 'deposit' ? ArrowDownRight :
+                            tx.type === 'invest' ? ArrowUpRight :
+                            tx.type === 'redeem' ? ArrowDownRight :
+                            ArrowUpRight}
+                      variant={tx.type === 'deposit' ? 'green' :
+                               tx.type === 'invest' ? 'blue' :
+                               tx.type === 'redeem' ? 'amber' : 'red'}
+                      size="sm"
+                    />
                     <div>
                       <p className="text-sm font-medium capitalize text-foreground">{tx.type}</p>
                       {tx.vaultName && <p className="text-xs text-muted-foreground">{tx.vaultName}</p>}
