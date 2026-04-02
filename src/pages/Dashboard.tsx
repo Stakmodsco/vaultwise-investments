@@ -81,7 +81,7 @@ const Dashboard = () => {
       <Navbar />
       <DepositModal open={depositOpen} onClose={() => setDepositOpen(false)} />
 
-      <div className="container mx-auto px-6 pb-12 pt-24">
+      <div className="container mx-auto px-6 pb-12 pt-[88px]">
         <motion.div variants={container} initial="hidden" animate="show">
           {/* Header */}
           <motion.div variants={item} className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

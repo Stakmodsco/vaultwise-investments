@@ -11,7 +11,7 @@ const Vaults = () => {
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-0">
       <Navbar />
-      <div className="container mx-auto px-6 pb-12 pt-24">
+      <div className="container mx-auto px-6 pb-12 pt-[88px]">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <h1 className="mb-2 font-display text-3xl font-bold text-foreground">Vaults</h1>
           <p className="mb-8 text-muted-foreground">Choose a strategy that matches your risk appetite.</p>
