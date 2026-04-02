@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Bell, User, LayoutDashboard, Vault, Wallet } from 'lucide-react';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { formatUSD } from '@/lib/vaults';
-import Icon3D from '@/components/ui/Icon3D';
+import vaultxLogo from '@/assets/vaultx-logo.png';
 
 const Navbar = () => {
   const location = useLocation();
