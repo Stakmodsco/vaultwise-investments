@@ -189,12 +189,43 @@ const Dashboard = () => {
             <div className="glass-card rounded-2xl p-6">
               <h3 className="mb-4 font-display text-sm font-semibold text-foreground">Allocation</h3>
               {pieData.length > 0 && pieData[0].value > 0 ? (
-                <div className="flex h-48 items-center justify-center">
+                <div className="relative flex h-48 items-center justify-center">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
-                      <Pie data={pieData} cx="50%" cy="50%" outerRadius={70} innerRadius={45} dataKey="value" paddingAngle={3} strokeWidth={0}>
+                      <Pie
+                        data={pieData}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={70}
+                        innerRadius={45}
+                        dataKey="value"
+                        paddingAngle={3}
+                        strokeWidth={0}
+                        isAnimationActive
+                        animationBegin={0}
+                        animationDuration={900}
+                        animationEasing="ease-out"
+                        activeIndex={activeSlice ?? undefined}
+                        activeShape={(props: any) => {
+                          const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
+                          return (
+                            <Sector
+                              cx={cx}
+                              cy={cy}
+                              innerRadius={innerRadius}
+                              outerRadius={outerRadius + 6}
+                              startAngle={startAngle}
+                              endAngle={endAngle}
+                              fill={fill}
+                              style={{ filter: `drop-shadow(0 0 12px ${fill}66)` }}
+                            />
+                          );
+                        }}
+                        onMouseEnter={(_, idx) => setActiveSlice(idx)}
+                        onMouseLeave={() => setActiveSlice(null)}
+                      >
                         {pieData.map((entry, i) => {
-                          const color = entry.id === 'cash' ? '#5F6B7A' : (getVaultAccent(entry.id)?.stroke || CHART_COLORS[i]);
+                          const color = entry.id === 'cash' ? '#8B98A5' : (getVaultAccent(entry.id)?.stroke || CHART_COLORS[i]);
                           return <Cell key={i} fill={color} />;
                         })}
                       </Pie>
@@ -209,22 +240,43 @@ const Dashboard = () => {
                       />
                     </PieChart>
                   </ResponsiveContainer>
+                  {/* Center total label */}
+                  <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Total</p>
+                    <p className="font-display text-base font-bold text-foreground">
+                      {formatUSD(pieData.reduce((s, d) => s + d.value, 0))}
+                    </p>
+                  </div>
                 </div>
               ) : (
                 <div className="flex h-48 items-center justify-center text-sm text-muted-foreground">
                   No investments yet
                 </div>
               )}
-              <div className="mt-3 space-y-2">
+              <div className="mt-3 space-y-1">
                 {pieData.map((d, i) => {
-                   const color = d.id === 'cash' ? '#8B98A5' : (getVaultAccent(d.id)?.stroke || CHART_COLORS[i]);
+                  const color = d.id === 'cash' ? '#8B98A5' : (getVaultAccent(d.id)?.stroke || CHART_COLORS[i]);
+                  const total = pieData.reduce((s, x) => s + x.value, 0);
+                  const pct = total > 0 ? (d.value / total) * 100 : 0;
+                  const isActive = activeSlice === i;
                   return (
-                    <div key={d.name} className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <div className="h-2.5 w-2.5 rounded-full" style={{ background: color }} />
-                        {d.name}
+                    <div
+                      key={d.name}
+                      onMouseEnter={() => setActiveSlice(i)}
+                      onMouseLeave={() => setActiveSlice(null)}
+                      className={`flex items-center justify-between rounded-lg px-2 py-1.5 text-xs transition-all duration-200 cursor-default ${
+                        isActive ? 'bg-secondary/60' : ''
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 text-foreground">
+                        <div
+                          className="h-2.5 w-2.5 rounded-full ring-2 ring-background transition-shadow duration-200"
+                          style={{ background: color, boxShadow: isActive ? `0 0 10px ${color}` : 'none' }}
+                        />
+                        <span className="font-medium">{d.name}</span>
+                        <span className="text-muted-foreground">{pct.toFixed(1)}%</span>
                       </div>
-                      <span className="font-medium text-secondary-foreground">{formatUSD(d.value)}</span>
+                      <span className="font-semibold text-foreground">{formatUSD(d.value)}</span>
                     </div>
                   );
                 })}
