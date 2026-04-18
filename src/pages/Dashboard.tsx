@@ -10,7 +10,12 @@ import { Area, AreaChart, ResponsiveContainer, PieChart, Pie, Cell, Tooltip, XAx
 import { Plus, TrendingUp, Wallet, PiggyBank, ArrowUpRight, ArrowDownRight, Shield, Flame, Gem, Zap } from 'lucide-react';
 import Icon3D from '@/components/ui/Icon3D';
 
-const CHART_COLORS = ['#4F8CFF', '#EF4444', '#22C55E', '#8B5CF6', '#5F6B7A'];
+// Nature palette: forest, leaf, gold, ember + neutral
+const CHART_COLORS = ['#25671E', '#48A111', '#F2B50B', '#EF4444', '#8B98A5'];
+const CHART_PRIMARY = '#48A111';
+const TOOLTIP_BG = 'hsl(120, 15%, 9%)';
+const TOOLTIP_BORDER = 'hsl(120, 12%, 22%)';
+const TOOLTIP_TEXT = 'hsl(60, 20%, 96%)';
 
 const vaultIconMap: Record<string, typeof Shield> = {
   'bluechip-growth': Shield,
@@ -153,18 +158,18 @@ const Dashboard = () => {
                   <AreaChart data={portfolioHistory}>
                     <defs>
                       <linearGradient id="portfolioGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#4F8CFF" stopOpacity={0.25} />
-                        <stop offset="100%" stopColor="#4F8CFF" stopOpacity={0} />
+                        <stop offset="0%" stopColor={CHART_PRIMARY} stopOpacity={0.3} />
+                        <stop offset="100%" stopColor={CHART_PRIMARY} stopOpacity={0} />
                       </linearGradient>
                     </defs>
-                    <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#5F6B7A' }} axisLine={false} tickLine={false} />
-                    <Area type="monotone" dataKey="value" stroke="#4F8CFF" strokeWidth={2.5} fill="url(#portfolioGrad)" />
+                    <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#8B98A5' }} axisLine={false} tickLine={false} />
+                    <Area type="monotone" dataKey="value" stroke={CHART_PRIMARY} strokeWidth={2.5} fill="url(#portfolioGrad)" />
                     <Tooltip
                       contentStyle={{
-                        background: 'hsl(215, 28%, 10%)',
-                        border: '1px solid hsl(215, 15%, 22%)',
+                        background: TOOLTIP_BG,
+                        border: `1px solid ${TOOLTIP_BORDER}`,
                         borderRadius: '12px',
-                        color: '#E6EDF3',
+                        color: TOOLTIP_TEXT,
                         boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
                       }}
                       formatter={(value: number) => [formatUSD(value), 'Value']}
@@ -188,10 +193,10 @@ const Dashboard = () => {
                       </Pie>
                       <Tooltip
                         contentStyle={{
-                          background: 'hsl(215, 28%, 10%)',
-                          border: '1px solid hsl(215, 15%, 22%)',
+                          background: TOOLTIP_BG,
+                          border: `1px solid ${TOOLTIP_BORDER}`,
                           borderRadius: '12px',
-                          color: '#E6EDF3',
+                          color: TOOLTIP_TEXT,
                         }}
                         formatter={(value: number) => [formatUSD(value)]}
                       />
@@ -205,7 +210,7 @@ const Dashboard = () => {
               )}
               <div className="mt-3 space-y-2">
                 {pieData.map((d, i) => {
-                  const color = d.id === 'cash' ? '#5F6B7A' : (getVaultAccent(d.id)?.stroke || CHART_COLORS[i]);
+                   const color = d.id === 'cash' ? '#8B98A5' : (getVaultAccent(d.id)?.stroke || CHART_COLORS[i]);
                   return (
                     <div key={d.name} className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2 text-muted-foreground">

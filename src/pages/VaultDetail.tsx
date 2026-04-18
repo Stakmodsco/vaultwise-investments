@@ -136,14 +136,14 @@ const VaultDetail = () => {
                           <stop offset="100%" stopColor={accent.stroke} stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#5F6B7A' }} axisLine={false} tickLine={false} />
-                      <YAxis tick={{ fontSize: 10, fill: '#5F6B7A' }} axisLine={false} tickLine={false} domain={['auto', 'auto']} />
+                      <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#8B98A5' }} axisLine={false} tickLine={false} />
+                      <YAxis tick={{ fontSize: 10, fill: '#8B98A5' }} axisLine={false} tickLine={false} domain={['auto', 'auto']} />
                       <Tooltip
                         contentStyle={{
-                          background: 'hsl(215, 28%, 10%)',
-                          border: '1px solid hsl(215, 15%, 22%)',
+                          background: 'hsl(120, 15%, 9%)',
+                          border: '1px solid hsl(120, 12%, 22%)',
                           borderRadius: '12px',
-                          color: '#E6EDF3',
+                          color: 'hsl(60, 20%, 96%)',
                           boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
                         }}
                       />
