@@ -9,6 +9,7 @@ import { getVaultAccent, getVaultIcon3DVariant } from '@/lib/vault-colors';
 import { Area, AreaChart, ResponsiveContainer, PieChart, Pie, Cell, Tooltip, XAxis } from 'recharts';
 import { Plus, TrendingUp, Wallet, PiggyBank, ArrowUpRight, ArrowDownRight, Shield, Flame, Gem, Zap } from 'lucide-react';
 import Icon3D from '@/components/ui/Icon3D';
+import YourRankCard from '@/components/dashboard/YourRankCard';
 
 // Nature palette: forest, leaf, gold, ember + neutral
 const CHART_COLORS = ['#25671E', '#48A111', '#F2B50B', '#EF4444', '#8B98A5'];
@@ -132,6 +133,11 @@ const Dashboard = () => {
                 )}
               </div>
             ))}
+          </motion.div>
+
+          {/* Your Leaderboard Rank */}
+          <motion.div variants={item} className="mb-8">
+            <YourRankCard portfolio={portfolioTotal} pnlPct={pnlPercent} />
           </motion.div>
 
           {/* Charts */}
