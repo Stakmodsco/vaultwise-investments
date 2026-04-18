@@ -2,31 +2,10 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
 import Icon3D from '@/components/ui/Icon3D';
+import AchievementBadge from '@/components/leaderboard/AchievementBadge';
 import { Trophy, Medal, Award, TrendingUp, Crown, Sparkles } from 'lucide-react';
 import { formatUSD } from '@/lib/vaults';
-
-interface LeaderUser {
-  id: string;
-  name: string;
-  handle: string;
-  vault: string;
-  portfolio: number;
-  pnlPct: number;
-  streak: number;
-}
-
-const seedUsers: LeaderUser[] = [
-  { id: '1', name: 'Aria Chen', handle: '@arialeaf', vault: 'Alpha Aggressive', portfolio: 184230, pnlPct: 42.7, streak: 28 },
-  { id: '2', name: 'Marco Vega', handle: '@vegaforest', vault: 'Momentum Trader', portfolio: 156890, pnlPct: 38.4, streak: 21 },
-  { id: '3', name: 'Yuki Tanaka', handle: '@yukigreen', vault: 'BlueChip Growth', portfolio: 142100, pnlPct: 31.2, streak: 19 },
-  { id: '4', name: 'Liam Okafor', handle: '@liamoak', vault: 'Alpha Aggressive', portfolio: 128450, pnlPct: 28.9, streak: 15 },
-  { id: '5', name: 'Sofia Rossi', handle: '@sofiabloom', vault: 'Stable Yield', portfolio: 119780, pnlPct: 24.6, streak: 24 },
-  { id: '6', name: 'Kai Nakamura', handle: '@kaiwave', vault: 'Momentum Trader', portfolio: 108220, pnlPct: 22.1, streak: 12 },
-  { id: '7', name: 'Priya Shah', handle: '@priyaroot', vault: 'BlueChip Growth', portfolio: 96540, pnlPct: 19.8, streak: 17 },
-  { id: '8', name: 'Diego Morales', handle: '@diegofern', vault: 'Stable Yield', portfolio: 88330, pnlPct: 17.4, streak: 22 },
-  { id: '9', name: 'Elena Volkov', handle: '@elenavolk', vault: 'Alpha Aggressive', portfolio: 79100, pnlPct: 14.9, streak: 9 },
-  { id: '10', name: 'Theo Bennett', handle: '@theoben', vault: 'Momentum Trader', portfolio: 71450, pnlPct: 12.3, streak: 11 },
-];
+import { seedUsers, getUserAchievements, type LeaderUser } from '@/lib/leaderboard';
 
 const periods = ['24h', '7d', '30d', 'All'] as const;
 type Period = typeof periods[number];
