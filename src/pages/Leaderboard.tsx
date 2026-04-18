@@ -121,6 +121,11 @@ const Leaderboard = () => {
                   <Sparkles size={10} />
                   {u.streak}d streak
                 </div>
+                <div className="mt-4 flex justify-center gap-2">
+                  {getUserAchievements(u, i + 1).map((aid) => (
+                    <AchievementBadge key={aid} id={aid} size="sm" />
+                  ))}
+                </div>
               </motion.div>
             );
           })}
@@ -172,6 +177,11 @@ const Leaderboard = () => {
                   <div className="col-span-6 sm:col-span-4">
                     <p className="font-display text-sm font-semibold text-foreground">{u.name}</p>
                     <p className="text-xs text-muted-foreground">{u.handle}</p>
+                    <div className="mt-1.5 flex flex-wrap gap-1.5">
+                      {getUserAchievements(u, i + 1).map((aid) => (
+                        <AchievementBadge key={aid} id={aid} size="sm" />
+                      ))}
+                    </div>
                   </div>
 
                   <div className="col-span-12 hidden sm:col-span-3 sm:block">
