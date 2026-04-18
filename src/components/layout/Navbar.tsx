@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Bell, User, LayoutDashboard, Vault, Wallet } from 'lucide-react';
+import { Bell, User, LayoutDashboard, Vault, Wallet, Trophy } from 'lucide-react';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { formatUSD } from '@/lib/vaults';
 import vaultxLogo from '@/assets/vaultx-logo.png';
@@ -48,6 +48,15 @@ const Navbar = () => {
                   <Vault size={16} />
                   Vaults
                 </Link>
+                <Link
+                  to="/leaderboard"
+                  className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-secondary ${
+                    location.pathname === '/leaderboard' ? 'text-foreground bg-secondary' : 'text-muted-foreground'
+                  }`}
+                >
+                  <Trophy size={16} />
+                  Leaderboard
+                </Link>
               </>
             )}
           </div>
@@ -91,7 +100,7 @@ const Navbar = () => {
             {[
               { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
               { to: '/vaults', icon: Vault, label: 'Vaults' },
-              { to: '/dashboard', icon: Wallet, label: 'Wallet' },
+              { to: '/leaderboard', icon: Trophy, label: 'Leaders' },
               { to: '/dashboard', icon: User, label: 'Profile' },
             ].map(({ to, icon: Icon, label }) => {
               const isActive = location.pathname === to;

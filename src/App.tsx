@@ -10,6 +10,7 @@ import Index from "./pages/Index.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Vaults from "./pages/Vaults.tsx";
 import VaultDetail from "./pages/VaultDetail.tsx";
+import Leaderboard from "./pages/Leaderboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const AnimatedRoutes = () => {
         <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
         <Route path="/vaults" element={<PageTransition><Vaults /></PageTransition>} />
         <Route path="/vault/:id" element={<PageTransition><VaultDetail /></PageTransition>} />
+        <Route path="/leaderboard" element={<PageTransition><Leaderboard /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
