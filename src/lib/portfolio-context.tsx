@@ -24,6 +24,7 @@ interface PortfolioContextType {
   deposit: (amount: number) => void;
   invest: (vaultId: string, amount: number) => void;
   withdraw: (vaultId: string, units: number) => void;
+  reset: () => void;
   getInvestmentValue: (investment: Investment) => number;
   getTotalInvested: () => number;
   getTotalValue: () => number;
@@ -95,6 +96,14 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
     addTransaction({ type: 'redeem', amount: value, vaultName: vault.name });
   }, [vaults, investments, addTransaction]);
 
+  const reset = useCallback(() => {
+    setBalance(10000);
+    setInvestments([]);
+    setTransactions([
+      { id: '1', type: 'deposit', amount: 10000, date: new Date() },
+    ]);
+  }, []);
+
   const getInvestmentValue = useCallback((investment: Investment) => {
     const vault = vaults.find(v => v.id === investment.vaultId);
     return vault ? investment.units * vault.unitPrice : 0;
@@ -116,7 +125,7 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
     <PortfolioContext.Provider
       value={{
         balance, investments, transactions, vaults,
-        deposit, invest, withdraw, getInvestmentValue,
+        deposit, invest, withdraw, reset, getInvestmentValue,
         getTotalInvested, getTotalValue, getTotalPnL,
       }}
     >

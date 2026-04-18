@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 import Navbar from '@/components/layout/Navbar';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { formatUSD, getRiskColor, getRiskBgColor } from '@/lib/vaults';
@@ -44,18 +45,33 @@ const VaultDetail = () => {
 
   const handleInvest = () => {
     const val = parseFloat(investAmount);
-    if (val > 0 && val <= balance) {
-      invest(vault.id, val);
-      setInvestAmount('');
+    if (val <= 0 || isNaN(val)) {
+      toast.error('Enter a valid amount');
+      return;
     }
+    if (val > balance) {
+      toast.error('Insufficient balance', { description: `You only have ${formatUSD(balance)} available.` });
+      return;
+    }
+    invest(vault.id, val);
+    toast.success(`Invested ${formatUSD(val)} in ${vault.name}`);
+    setInvestAmount('');
   };
 
   const handleWithdraw = () => {
     const units = parseFloat(withdrawUnits);
-    if (investment && units > 0 && units <= investment.units) {
-      withdraw(vault.id, units);
-      setWithdrawUnits('');
+    if (!investment || units <= 0 || isNaN(units)) {
+      toast.error('Enter a valid amount');
+      return;
     }
+    if (units > investment.units) {
+      toast.error('Not enough units', { description: `You only have ${investment.units.toFixed(4)} units.` });
+      return;
+    }
+    const value = units * vault.unitPrice;
+    withdraw(vault.id, units);
+    toast.success(`Withdrew ${formatUSD(value)} from ${vault.name}`);
+    setWithdrawUnits('');
   };
 
   return (

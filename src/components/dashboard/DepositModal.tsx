@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { formatUSD } from '@/lib/vaults';
 import { X, DollarSign, AlertCircle } from 'lucide-react';
@@ -22,6 +23,9 @@ const DepositModal = ({ open, onClose }: { open: boolean; onClose: () => void })
     }
     if (val > 0) {
       deposit(val);
+      toast.success(`Deposited ${formatUSD(val)}`, {
+        description: 'Your wallet balance has been updated.',
+      });
       setAmount('');
       setShowError(false);
       onClose();
