@@ -1,6 +1,9 @@
 import { type LucideIcon } from 'lucide-react';
 
-type Icon3DVariant = 'blue' | 'green' | 'red' | 'purple' | 'teal' | 'amber' | 'default';
+type Icon3DVariant =
+  | 'forest' | 'leaf' | 'gold' | 'ember'
+  | 'blue' | 'green' | 'red' | 'purple' | 'teal' | 'amber'
+  | 'default';
 type Icon3DSize = 'sm' | 'md' | 'lg' | 'xl';
 
 interface Icon3DProps {
@@ -18,15 +21,37 @@ const sizeMap: Record<Icon3DSize, { container: string; icon: number; radius: str
   xl: { container: 'w-16 h-16', icon: 28, radius: 'rounded-2xl' },
 };
 
+// Nature palette: #25671E forest, #48A111 leaf, #F2B50B gold, #EF4444 ember
 const variantStyles: Record<Icon3DVariant, { bg: string; shadow: string; ring: string }> = {
+  forest: {
+    bg: 'bg-gradient-to-br from-[hsl(115,37%,34%)] to-[hsl(115,37%,20%)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(115,37%,26%/0.5)]',
+    ring: 'ring-1 ring-white/10',
+  },
+  leaf: {
+    bg: 'bg-gradient-to-br from-[hsl(99,81%,46%)] to-[hsl(99,81%,28%)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(99,81%,35%/0.45)]',
+    ring: 'ring-1 ring-white/10',
+  },
+  gold: {
+    bg: 'bg-gradient-to-br from-[hsl(45,92%,58%)] to-[hsl(45,92%,40%)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(45,92%,49%/0.45)]',
+    ring: 'ring-1 ring-white/10',
+  },
+  ember: {
+    bg: 'bg-gradient-to-br from-[hsl(0,84%,62%)] to-[hsl(0,84%,44%)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(0,84%,55%/0.4)]',
+    ring: 'ring-1 ring-white/10',
+  },
+  // Aliases (back-compat)
   blue: {
-    bg: 'bg-gradient-to-br from-[hsl(217,90%,58%)] to-[hsl(217,100%,42%)]',
-    shadow: 'shadow-[0_4px_14px_-2px_hsl(217,100%,50%/0.4)]',
+    bg: 'bg-gradient-to-br from-[hsl(115,37%,34%)] to-[hsl(115,37%,20%)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(115,37%,26%/0.5)]',
     ring: 'ring-1 ring-white/10',
   },
   green: {
-    bg: 'bg-gradient-to-br from-[hsl(142,71%,52%)] to-[hsl(142,71%,36%)]',
-    shadow: 'shadow-[0_4px_14px_-2px_hsl(142,71%,45%/0.4)]',
+    bg: 'bg-gradient-to-br from-[hsl(99,81%,46%)] to-[hsl(99,81%,28%)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(99,81%,35%/0.45)]',
     ring: 'ring-1 ring-white/10',
   },
   red: {
@@ -35,23 +60,23 @@ const variantStyles: Record<Icon3DVariant, { bg: string; shadow: string; ring: s
     ring: 'ring-1 ring-white/10',
   },
   purple: {
-    bg: 'bg-gradient-to-br from-[hsl(258,90%,68%)] to-[hsl(258,90%,48%)]',
-    shadow: 'shadow-[0_4px_14px_-2px_hsl(258,90%,55%/0.4)]',
+    bg: 'bg-gradient-to-br from-[hsl(45,92%,58%)] to-[hsl(45,92%,40%)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(45,92%,49%/0.45)]',
     ring: 'ring-1 ring-white/10',
   },
   teal: {
-    bg: 'bg-gradient-to-br from-[hsl(168,100%,46%)] to-[hsl(168,100%,32%)]',
-    shadow: 'shadow-[0_4px_14px_-2px_hsl(168,100%,40%/0.4)]',
+    bg: 'bg-gradient-to-br from-[hsl(115,37%,38%)] to-[hsl(115,37%,22%)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(115,37%,28%/0.5)]',
     ring: 'ring-1 ring-white/10',
   },
   amber: {
-    bg: 'bg-gradient-to-br from-[hsl(43,96%,58%)] to-[hsl(43,96%,40%)]',
-    shadow: 'shadow-[0_4px_14px_-2px_hsl(43,96%,50%/0.4)]',
+    bg: 'bg-gradient-to-br from-[hsl(45,92%,58%)] to-[hsl(45,92%,40%)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(45,92%,49%/0.45)]',
     ring: 'ring-1 ring-white/10',
   },
   default: {
     bg: 'bg-gradient-to-br from-secondary to-muted',
-    shadow: 'shadow-[0_4px_14px_-2px_hsl(215,20%,15%/0.5)]',
+    shadow: 'shadow-[0_4px_14px_-2px_hsl(120,15%,10%/0.5)]',
     ring: 'ring-1 ring-white/5',
   },
 };
