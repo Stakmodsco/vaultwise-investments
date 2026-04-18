@@ -6,7 +6,7 @@ import DepositModal from '@/components/dashboard/DepositModal';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { formatUSD, getRiskColor, getRiskBgColor } from '@/lib/vaults';
 import { getVaultAccent, getVaultIcon3DVariant } from '@/lib/vault-colors';
-import { Area, AreaChart, ResponsiveContainer, PieChart, Pie, Cell, Tooltip, XAxis } from 'recharts';
+import { Area, AreaChart, ResponsiveContainer, PieChart, Pie, Cell, Sector, Tooltip, XAxis } from 'recharts';
 import { Plus, TrendingUp, Wallet, PiggyBank, ArrowUpRight, ArrowDownRight, Shield, Flame, Gem, Zap } from 'lucide-react';
 import Icon3D from '@/components/ui/Icon3D';
 import YourRankCard from '@/components/dashboard/YourRankCard';
@@ -54,6 +54,7 @@ const AnimatedNumber = ({ value, prefix = '', className = '' }: { value: number;
 const Dashboard = () => {
   const [depositOpen, setDepositOpen] = useState(false);
   const [chartPeriod, setChartPeriod] = useState<'1D' | '7D' | '30D' | 'All'>('7D');
+  const [activeSlice, setActiveSlice] = useState<number | null>(null);
   const { balance, investments, transactions, vaults, getInvestmentValue, getTotalValue, getTotalPnL } = usePortfolio();
 
   const totalValue = getTotalValue();
