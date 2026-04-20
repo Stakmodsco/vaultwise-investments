@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
 import { vaults as vaultData, Vault } from './vaults';
 
 interface Investment {
@@ -33,13 +33,57 @@ interface PortfolioContextType {
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined);
 
-export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
-  const [balance, setBalance] = useState(10000);
-  const [investments, setInvestments] = useState<Investment[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([
+const STORAGE_KEY = 'vaultx:portfolio:v1';
+
+interface PersistedState {
+  balance: number;
+  investments: Investment[];
+  transactions: Transaction[];
+}
+
+const loadState = (): PersistedState | null => {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as PersistedState;
+    return {
+      balance: parsed.balance,
+      investments: (parsed.investments || []).map((i) => ({ ...i, investedAt: new Date(i.investedAt) })),
+      transactions: (parsed.transactions || []).map((t) => ({ ...t, date: new Date(t.date) })),
+    };
+  } catch {
+    return null;
+  }
+};
+
+const defaultState = (): PersistedState => ({
+  balance: 10000,
+  investments: [],
+  transactions: [
     { id: '1', type: 'deposit', amount: 10000, date: new Date(Date.now() - 86400000 * 3) },
-  ]);
+  ],
+});
+
+export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
+  const initial = loadState() ?? defaultState();
+  const [balance, setBalance] = useState<number>(initial.balance);
+  const [investments, setInvestments] = useState<Investment[]>(initial.investments);
+  const [transactions, setTransactions] = useState<Transaction[]>(initial.transactions);
   const [vaults] = useState<Vault[]>(vaultData);
+
+  // Persist on every change
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ balance, investments, transactions })
+      );
+    } catch {
+      // storage full / disabled — silently ignore
+    }
+  }, [balance, investments, transactions]);
 
   const addTransaction = useCallback((tx: Omit<Transaction, 'id' | 'date'>) => {
     setTransactions(prev => [
@@ -97,11 +141,13 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
   }, [vaults, investments, addTransaction]);
 
   const reset = useCallback(() => {
-    setBalance(10000);
-    setInvestments([]);
-    setTransactions([
-      { id: '1', type: 'deposit', amount: 10000, date: new Date() },
-    ]);
+    const fresh = defaultState();
+    setBalance(fresh.balance);
+    setInvestments(fresh.investments);
+    setTransactions([{ id: '1', type: 'deposit', amount: 10000, date: new Date() }]);
+    if (typeof window !== 'undefined') {
+      try { window.localStorage.removeItem(STORAGE_KEY); } catch { /* noop */ }
+    }
   }, []);
 
   const getInvestmentValue = useCallback((investment: Investment) => {

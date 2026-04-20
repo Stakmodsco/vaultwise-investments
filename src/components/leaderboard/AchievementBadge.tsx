@@ -11,7 +11,7 @@ const iconMap = {
 
 interface AchievementBadgeProps {
   id: AchievementId;
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const AchievementBadge = ({ id, size = 'sm' }: AchievementBadgeProps) => {
