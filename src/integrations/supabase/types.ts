@@ -14,7 +14,156 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      investments: {
+        Row: {
+          id: string
+          invested_amount: number
+          invested_at: string
+          units: number
+          updated_at: string
+          user_id: string
+          vault_id: string
+        }
+        Insert: {
+          id?: string
+          invested_amount?: number
+          invested_at?: string
+          units?: number
+          updated_at?: string
+          user_id: string
+          vault_id: string
+        }
+        Update: {
+          id?: string
+          invested_amount?: number
+          invested_at?: string
+          units?: number
+          updated_at?: string
+          user_id?: string
+          vault_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          change_pct: number | null
+          created_at: string
+          description: string | null
+          id: string
+          read: boolean
+          title: string
+          user_id: string
+          variant: string
+          vault_id: string | null
+          vault_name: string | null
+        }
+        Insert: {
+          change_pct?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          read?: boolean
+          title: string
+          user_id: string
+          variant?: string
+          vault_id?: string | null
+          vault_name?: string | null
+        }
+        Update: {
+          change_pct?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          read?: boolean
+          title?: string
+          user_id?: string
+          variant?: string
+          vault_id?: string | null
+          vault_name?: string | null
+        }
+        Relationships: []
+      }
+      portfolios: {
+        Row: {
+          balance: number
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          type: string
+          user_id: string
+          vault_id: string | null
+          vault_name: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          type: string
+          user_id: string
+          vault_id?: string | null
+          vault_name?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          type?: string
+          user_id?: string
+          vault_id?: string | null
+          vault_name?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
