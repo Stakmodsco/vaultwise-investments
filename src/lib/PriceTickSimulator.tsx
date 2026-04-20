@@ -1,20 +1,19 @@
 import { useEffect, useRef } from 'react';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { useNotifications } from '@/lib/notifications-context';
+import { useAuth } from '@/lib/auth-context';
 
 /**
- * Simulates per-vault price ticks every few seconds. When a vault moves
- * beyond the configured threshold, the notifications context fires a
- * real-time alert (toast + bell entry).
- *
- * Mounted once at the app root so it runs across routes.
+ * Per-vault price tick simulator that fires real-time notifications when a
+ * vault moves more than ±2% in a single tick. Only runs while a user is
+ * authenticated so notifications can be persisted to Cloud.
  */
 const PriceTickSimulator = () => {
+  const { user } = useAuth();
   const { vaults } = usePortfolio();
   const { registerPriceTick } = useNotifications();
   const pricesRef = useRef<Record<string, number>>({});
 
-  // Seed with current unit prices on mount
   useEffect(() => {
     vaults.forEach((v) => {
       if (pricesRef.current[v.id] === undefined) {
@@ -24,15 +23,14 @@ const PriceTickSimulator = () => {
   }, [vaults]);
 
   useEffect(() => {
+    if (!user) return;
     const interval = setInterval(() => {
       vaults.forEach((v) => {
         const prev = pricesRef.current[v.id] ?? v.unitPrice;
-        // Volatility tuned per risk
         const vol =
           v.risk === 'high' ? 0.025 :
           v.risk === 'medium' ? 0.015 :
           v.risk === 'low' ? 0.008 : 0.004;
-        // Bias slightly upward to mimic positive ROI vaults
         const drift = 0.0015;
         const change = (Math.random() - 0.5) * 2 * vol + drift;
         const next = Math.max(0.01, prev * (1 + change));
@@ -41,7 +39,7 @@ const PriceTickSimulator = () => {
       });
     }, 6000);
     return () => clearInterval(interval);
-  }, [vaults, registerPriceTick]);
+  }, [user, vaults, registerPriceTick]);
 
   return null;
 };
