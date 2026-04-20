@@ -162,15 +162,19 @@ const Navbar = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link to="/profile">
+                        <User size={14} className="mr-2" /> Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer">
                       <Link to="/leaderboard">
                         <Trophy size={14} className="mr-2" /> My Rank
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="cursor-pointer"
-                      onClick={() => toast.info('Settings coming soon')}
-                    >
-                      <Settings size={14} className="mr-2" /> Settings
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link to="/profile">
+                        <Settings size={14} className="mr-2" /> Settings
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="cursor-pointer"
@@ -243,11 +247,15 @@ const Navbar = () => {
                   <p className="text-xs text-muted-foreground">balance: {formatUSD(balance)}</p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => toast.info('Settings coming soon')}
-                >
-                  <Settings size={14} className="mr-2" /> Settings
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/profile">
+                    <User size={14} className="mr-2" /> Open Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/profile">
+                    <Settings size={14} className="mr-2" /> Settings
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer" onClick={handleReset}>
                   <RefreshCw size={14} className="mr-2" /> Reset Portfolio
