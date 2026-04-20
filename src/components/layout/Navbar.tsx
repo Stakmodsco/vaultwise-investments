@@ -94,35 +94,43 @@ const Navbar = () => {
                       className="relative rounded-xl bg-secondary/50 p-2.5 text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground"
                     >
                       <Bell size={18} />
-                      <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-accent animate-pulse-glow" />
+                      {unreadCount > 0 && (
+                        <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-accent-foreground animate-pulse-glow">
+                          {unreadCount > 9 ? '9+' : unreadCount}
+                        </span>
+                      )}
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-80">
                     <DropdownMenuLabel className="flex items-center justify-between">
                       <span>Notifications</span>
                       <span className="rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-semibold text-accent">
-                        {notifications.length} new
+                        {unreadCount} new
                       </span>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    {notifications.map((n) => {
+                    {notifications.length === 0 && (
+                      <p className="px-3 py-6 text-center text-xs text-muted-foreground">No alerts yet</p>
+                    )}
+                    {notifications.slice(0, 6).map((n) => {
                       const Icon = n.icon;
                       return (
                         <DropdownMenuItem
                           key={n.id}
                           className="flex items-start gap-3 py-2.5 cursor-pointer"
-                          onClick={() => toast(n.title)}
+                          onClick={() => toast(n.title, { description: n.description })}
                         >
                           <div className={`mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg ${
                             n.variant === 'leaf' ? 'bg-vault-low/15 text-vault-low'
                             : n.variant === 'forest' ? 'bg-vault-very-low/15 text-vault-very-low'
-                            : 'bg-accent/15 text-accent'
+                            : n.variant === 'gold' ? 'bg-vault-medium/15 text-vault-medium'
+                            : 'bg-destructive/15 text-destructive'
                           }`}>
                             <Icon size={14} />
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="truncate text-sm font-medium text-foreground">{n.title}</p>
-                            <p className="text-[11px] text-muted-foreground">{n.time}</p>
+                            <p className="text-[11px] text-muted-foreground">{formatRelative(n.date)}</p>
                           </div>
                         </DropdownMenuItem>
                       );
@@ -130,7 +138,7 @@ const Navbar = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="cursor-pointer justify-center text-xs text-muted-foreground"
-                      onClick={() => toast.success('All notifications marked as read')}
+                      onClick={() => { markAllRead(); toast.success('All notifications marked as read'); }}
                     >
                       Mark all as read
                     </DropdownMenuItem>
