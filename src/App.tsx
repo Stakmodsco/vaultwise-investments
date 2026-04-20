@@ -4,16 +4,22 @@ import { AnimatePresence } from "framer-motion";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/lib/auth-context";
+import { ProfileProvider } from "@/lib/profile-context";
 import { PortfolioProvider } from "@/lib/portfolio-context";
 import { NotificationsProvider } from "@/lib/notifications-context";
 import PriceTickSimulator from "@/lib/PriceTickSimulator";
+import AchievementWatcher from "@/lib/AchievementWatcher";
+import RequireAuth from "@/components/auth/RequireAuth";
 import PageTransition from "@/components/layout/PageTransition";
 import Index from "./pages/Index.tsx";
+import Auth from "./pages/Auth.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Vaults from "./pages/Vaults.tsx";
 import VaultDetail from "./pages/VaultDetail.tsx";
 import Leaderboard from "./pages/Leaderboard.tsx";
 import Profile from "./pages/Profile.tsx";
+import Notifications from "./pages/Notifications.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -24,11 +30,13 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-        <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
-        <Route path="/vaults" element={<PageTransition><Vaults /></PageTransition>} />
-        <Route path="/vault/:id" element={<PageTransition><VaultDetail /></PageTransition>} />
-        <Route path="/leaderboard" element={<PageTransition><Leaderboard /></PageTransition>} />
-        <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
+        <Route path="/auth" element={<PageTransition><Auth /></PageTransition>} />
+        <Route path="/dashboard" element={<RequireAuth><PageTransition><Dashboard /></PageTransition></RequireAuth>} />
+        <Route path="/vaults" element={<RequireAuth><PageTransition><Vaults /></PageTransition></RequireAuth>} />
+        <Route path="/vault/:id" element={<RequireAuth><PageTransition><VaultDetail /></PageTransition></RequireAuth>} />
+        <Route path="/leaderboard" element={<RequireAuth><PageTransition><Leaderboard /></PageTransition></RequireAuth>} />
+        <Route path="/profile" element={<RequireAuth><PageTransition><Profile /></PageTransition></RequireAuth>} />
+        <Route path="/notifications" element={<RequireAuth><PageTransition><Notifications /></PageTransition></RequireAuth>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
@@ -38,16 +46,21 @@ const AnimatedRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <PortfolioProvider>
-        <NotificationsProvider>
-          <PriceTickSimulator />
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AnimatedRoutes />
-          </BrowserRouter>
-        </NotificationsProvider>
-      </PortfolioProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <ProfileProvider>
+            <PortfolioProvider>
+              <NotificationsProvider>
+                <PriceTickSimulator />
+                <AchievementWatcher />
+                <Toaster />
+                <Sonner />
+                <AnimatedRoutes />
+              </NotificationsProvider>
+            </PortfolioProvider>
+          </ProfileProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
