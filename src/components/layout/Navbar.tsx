@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { Bell, User, LayoutDashboard, Vault, Wallet, Trophy, Settings, RefreshCw, LogOut, TrendingUp, Sparkles, Award } from 'lucide-react';
+import { Bell, User, LayoutDashboard, Vault, Wallet, Trophy, Settings, RefreshCw, LogOut } from 'lucide-react';
 import { usePortfolio } from '@/lib/portfolio-context';
+import { useNotifications, formatRelative } from '@/lib/notifications-context';
 import { formatUSD } from '@/lib/vaults';
 import vaultxLogo from '@/assets/vaultx-logo.png';
 import CryptoTicker from './CryptoTicker';
@@ -16,15 +17,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-const notifications = [
-  { id: 1, icon: TrendingUp, title: 'Stable Yield up +2.1% today', time: '2m ago', variant: 'leaf' as const },
-  { id: 2, icon: Award, title: 'You unlocked Diamond Hands 💎', time: '1h ago', variant: 'forest' as const },
-  { id: 3, icon: Sparkles, title: 'New vault: Momentum Trader live', time: '4h ago', variant: 'gold' as const },
-];
-
 const Navbar = () => {
   const location = useLocation();
   const { balance, reset } = usePortfolio();
+  const { notifications, unreadCount, markAllRead } = useNotifications();
   const isLanding = location.pathname === '/';
 
   const handleReset = () => {
