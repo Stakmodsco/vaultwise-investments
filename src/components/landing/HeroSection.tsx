@@ -2,10 +2,14 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, TrendingUp, Lock } from 'lucide-react';
 import Icon3D from '@/components/ui/Icon3D';
+import CryptoCoinsBackground from './CryptoCoinsBackground';
 
 const HeroSection = () => {
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20">
+      {/* Animated crypto coins slideshow */}
+      <CryptoCoinsBackground />
+
       {/* Background effects */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/3 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-primary/8 blur-[150px]" />
@@ -27,16 +31,6 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-border bg-secondary/40 px-5 py-2.5 backdrop-blur-sm"
-          >
-            <span className="h-2 w-2 animate-pulse-glow rounded-full bg-vault-low" />
-            <span className="text-sm font-medium text-muted-foreground">Live Portfolio Tracking</span>
-          </motion.div>
-
           <h1 className="mb-6 font-display text-5xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-7xl lg:text-8xl">
             Smart Crypto
             <br />
