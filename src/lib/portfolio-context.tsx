@@ -24,6 +24,7 @@ interface PortfolioContextType {
   investments: Investment[];
   transactions: Transaction[];
   vaults: Vault[];
+  priceUpdatedAt: Record<string, Date>;
   loading: boolean;
   deposit: (amount: number) => Promise<void>;
   invest: (vaultId: string, amount: number) => Promise<void>;
