@@ -109,8 +109,16 @@ const VaultCard = ({ vault, index }: VaultCardProps) => {
               </div>
             </div>
 
+            <div className="mt-4 flex items-center gap-1.5 text-[10px] text-muted-foreground">
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${isFresh ? 'bg-emerald-400 animate-pulse' : 'bg-muted-foreground/40'}`}
+                aria-hidden
+              />
+              <span>Price updated {formatAgo(updatedAt)}</span>
+            </div>
+
             <button
-              className="mt-5 w-full rounded-xl bg-primary/10 py-2.5 text-sm font-semibold text-primary transition-all duration-200 group-hover:bg-primary group-hover:text-primary-foreground"
+              className="mt-3 w-full rounded-xl bg-primary/10 py-2.5 text-sm font-semibold text-primary transition-all duration-200 group-hover:bg-primary group-hover:text-primary-foreground"
             >
               Invest
             </button>
