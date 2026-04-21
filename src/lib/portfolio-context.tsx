@@ -284,7 +284,7 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
   return (
     <PortfolioContext.Provider
       value={{
-        balance, investments, transactions, vaults, loading,
+        balance, investments, transactions, vaults, priceUpdatedAt, loading,
         deposit, invest, withdraw, reset, getInvestmentValue,
         getTotalInvested, getTotalValue, getTotalPnL,
       }}
