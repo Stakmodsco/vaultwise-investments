@@ -22,6 +22,7 @@ const Auth = () => {
   const [forgotEmail, setForgotEmail] = useState('');
   const [sendingReset, setSendingReset] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
 
   useEffect(() => {
     if (!authLoading && user) navigate('/dashboard', { replace: true });
