@@ -122,8 +122,9 @@ export const NotificationsProvider = ({ children }: { children: ReactNode }) => 
       vault_name: n.vault_name ?? null,
       change_pct: n.change_pct ?? null,
     });
-    if (!error && n.toastIt) {
-      toast(n.title, { description: n.description });
+    // Note: don't toast here — realtime INSERT handler shows the toast for everyone.
+    if (error && n.toastIt) {
+      toast.error('Failed to save notification');
     }
   }, [user]);
 
