@@ -47,20 +47,22 @@ const Auth = () => {
     }
   };
 
-  const handleGoogle = async () => {
-    if (googleLoading) return;
-    setGoogleLoading(true);
-    const result = await lovable.auth.signInWithOAuth('google', {
+  const handleOAuth = async (provider: 'google' | 'apple') => {
+    const setLoading = provider === 'google' ? setGoogleLoading : setAppleLoading;
+    if (provider === 'google' ? googleLoading : appleLoading) return;
+    setLoading(true);
+    const result = await lovable.auth.signInWithOAuth(provider, {
       redirect_uri: `${window.location.origin}/dashboard`,
     });
     if (result.error) {
-      toast.error('Google sign-in failed', { description: result.error instanceof Error ? result.error.message : String(result.error) });
-      setGoogleLoading(false);
+      toast.error(`${provider === 'google' ? 'Google' : 'Apple'} sign-in failed`, {
+        description: result.error instanceof Error ? result.error.message : String(result.error),
+      });
+      setLoading(false);
       return;
     }
-    if (result.redirected) return; // browser will navigate
-    // Tokens received - session is already set by lovable wrapper
-    toast.success('Signed in with Google');
+    if (result.redirected) return;
+    toast.success(`Signed in with ${provider === 'google' ? 'Google' : 'Apple'}`);
     navigate('/dashboard', { replace: true });
   };
 
