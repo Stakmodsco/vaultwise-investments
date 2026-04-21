@@ -164,6 +164,57 @@ export type Database = {
         }
         Relationships: []
       }
+      user_preferences: {
+        Row: {
+          created_at: string
+          email_alerts: boolean
+          id: string
+          marketing: boolean
+          push_alerts: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_alerts?: boolean
+          id?: string
+          marketing?: boolean
+          push_alerts?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email_alerts?: boolean
+          id?: string
+          marketing?: boolean
+          push_alerts?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vault_prices: {
+        Row: {
+          previous_price: number
+          unit_price: number
+          updated_at: string
+          vault_id: string
+        }
+        Insert: {
+          previous_price: number
+          unit_price: number
+          updated_at?: string
+          vault_id: string
+        }
+        Update: {
+          previous_price?: number
+          unit_price?: number
+          updated_at?: string
+          vault_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
