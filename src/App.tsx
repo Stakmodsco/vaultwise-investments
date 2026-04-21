@@ -6,14 +6,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/lib/auth-context";
 import { ProfileProvider } from "@/lib/profile-context";
+import { PreferencesProvider } from "@/lib/preferences-context";
 import { PortfolioProvider } from "@/lib/portfolio-context";
 import { NotificationsProvider } from "@/lib/notifications-context";
-import PriceTickSimulator from "@/lib/PriceTickSimulator";
 import AchievementWatcher from "@/lib/AchievementWatcher";
 import RequireAuth from "@/components/auth/RequireAuth";
 import PageTransition from "@/components/layout/PageTransition";
 import Index from "./pages/Index.tsx";
 import Auth from "./pages/Auth.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Vaults from "./pages/Vaults.tsx";
 import VaultDetail from "./pages/VaultDetail.tsx";
@@ -31,6 +32,7 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Index /></PageTransition>} />
         <Route path="/auth" element={<PageTransition><Auth /></PageTransition>} />
+        <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
         <Route path="/dashboard" element={<RequireAuth><PageTransition><Dashboard /></PageTransition></RequireAuth>} />
         <Route path="/vaults" element={<RequireAuth><PageTransition><Vaults /></PageTransition></RequireAuth>} />
         <Route path="/vault/:id" element={<RequireAuth><PageTransition><VaultDetail /></PageTransition></RequireAuth>} />
@@ -49,15 +51,16 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ProfileProvider>
-            <PortfolioProvider>
-              <NotificationsProvider>
-                <PriceTickSimulator />
-                <AchievementWatcher />
-                <Toaster />
-                <Sonner />
-                <AnimatedRoutes />
-              </NotificationsProvider>
-            </PortfolioProvider>
+            <PreferencesProvider>
+              <PortfolioProvider>
+                <NotificationsProvider>
+                  <AchievementWatcher />
+                  <Toaster />
+                  <Sonner />
+                  <AnimatedRoutes />
+                </NotificationsProvider>
+              </PortfolioProvider>
+            </PreferencesProvider>
           </ProfileProvider>
         </AuthProvider>
       </BrowserRouter>
