@@ -6,7 +6,7 @@ import { formatUSD } from '@/lib/vaults';
 import { X, DollarSign, AlertCircle } from 'lucide-react';
 import Icon3D from '@/components/ui/Icon3D';
 
-const MIN_DEPOSIT = 10;
+const MIN_DEPOSIT = 100;
 
 const DepositModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const [amount, setAmount] = useState('');
