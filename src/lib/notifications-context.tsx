@@ -86,7 +86,17 @@ export const NotificationsProvider = ({ children }: { children: ReactNode }) => 
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
         (payload) => {
-          setNotifications((prev) => [mapRow(payload.new), ...prev].slice(0, 200));
+          const n = mapRow(payload.new);
+          setNotifications((prev) => {
+            if (prev.some((p) => p.id === n.id)) return prev;
+            return [n, ...prev].slice(0, 200);
+          });
+          // In-app push: pop a toast for every incoming notification
+          const toastFn = n.variant === 'leaf' ? toast.success : n.variant === 'ember' ? toast.error : toast;
+          toastFn(n.title, {
+            description: n.description ?? undefined,
+            duration: 6000,
+          });
         }
       )
       .subscribe();
