@@ -32,6 +32,7 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Index /></PageTransition>} />
         <Route path="/auth" element={<PageTransition><Auth /></PageTransition>} />
+        <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
         <Route path="/dashboard" element={<RequireAuth><PageTransition><Dashboard /></PageTransition></RequireAuth>} />
         <Route path="/vaults" element={<RequireAuth><PageTransition><Vaults /></PageTransition></RequireAuth>} />
         <Route path="/vault/:id" element={<RequireAuth><PageTransition><VaultDetail /></PageTransition></RequireAuth>} />
@@ -50,15 +51,16 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ProfileProvider>
-            <PortfolioProvider>
-              <NotificationsProvider>
-                <PriceTickSimulator />
-                <AchievementWatcher />
-                <Toaster />
-                <Sonner />
-                <AnimatedRoutes />
-              </NotificationsProvider>
-            </PortfolioProvider>
+            <PreferencesProvider>
+              <PortfolioProvider>
+                <NotificationsProvider>
+                  <AchievementWatcher />
+                  <Toaster />
+                  <Sonner />
+                  <AnimatedRoutes />
+                </NotificationsProvider>
+              </PortfolioProvider>
+            </PreferencesProvider>
           </ProfileProvider>
         </AuthProvider>
       </BrowserRouter>

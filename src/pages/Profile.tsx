@@ -13,6 +13,7 @@ import { usePortfolio } from '@/lib/portfolio-context';
 import { useNotifications, formatRelative, variantIcon } from '@/lib/notifications-context';
 import { useAuth } from '@/lib/auth-context';
 import { useProfile } from '@/lib/profile-context';
+import { usePreferences } from '@/lib/preferences-context';
 import { computeUserRank, getUserAchievements, achievementMeta, type AchievementId, type LeaderUser } from '@/lib/leaderboard';
 import { formatUSD } from '@/lib/vaults';
 
@@ -21,10 +22,8 @@ const Profile = () => {
   const { notifications, unreadCount } = useNotifications();
   const { user, signOut } = useAuth();
   const { profile, updateProfile, uploadAvatar } = useProfile();
+  const { preferences, update: updatePreferences } = usePreferences();
 
-  const [emailAlerts, setEmailAlerts] = useState(true);
-  const [pushAlerts, setPushAlerts] = useState(true);
-  const [marketing, setMarketing] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState('');
   const [savingName, setSavingName] = useState(false);
@@ -293,14 +292,15 @@ const Profile = () => {
         >
           <h3 className="mb-5 font-display text-lg font-semibold text-foreground">Account Settings</h3>
           <div className="space-y-1">
-            {[
-              { label: 'Email price alerts', desc: 'Get an email when a vault moves ±2% in a tick.', value: emailAlerts, set: setEmailAlerts, icon: Mail },
-              { label: 'In-app push notifications', desc: 'Real-time toasts and bell badge updates.', value: pushAlerts, set: setPushAlerts, icon: Bell },
-              { label: 'Marketing updates', desc: 'New vaults, product news, and promotions.', value: marketing, set: setMarketing, icon: TrendingUp },
-            ].map((row) => {
+            {([
+              { key: 'email_alerts' as const, label: 'Email price alerts', desc: 'Get an email when a vault moves ±2% in a tick.', icon: Mail },
+              { key: 'push_alerts' as const, label: 'In-app push notifications', desc: 'Real-time toasts and bell badge updates.', icon: Bell },
+              { key: 'marketing' as const, label: 'Marketing updates', desc: 'New vaults, product news, and promotions.', icon: TrendingUp },
+            ]).map((row) => {
               const Icon = row.icon;
+              const value = preferences[row.key];
               return (
-                <div key={row.label} className="flex items-center justify-between gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-secondary/30">
+                <div key={row.key} className="flex items-center justify-between gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-secondary/30">
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-lg bg-secondary/60 text-foreground">
                       <Icon size={16} />
@@ -311,10 +311,11 @@ const Profile = () => {
                     </div>
                   </div>
                   <Switch
-                    checked={row.value}
-                    onCheckedChange={(v) => {
-                      row.set(v);
-                      toast.success(`${row.label} ${v ? 'enabled' : 'disabled'}`);
+                    checked={value}
+                    onCheckedChange={async (v) => {
+                      const { error } = await updatePreferences({ [row.key]: v });
+                      if (error) toast.error('Could not save', { description: error });
+                      else toast.success(`${row.label} ${v ? 'enabled' : 'disabled'}`);
                     }}
                   />
                 </div>

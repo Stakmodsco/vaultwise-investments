@@ -42,8 +42,37 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
   const [balance, setBalance] = useState<number>(0);
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [vaults] = useState<Vault[]>(vaultData);
+  const [vaults, setVaults] = useState<Vault[]>(vaultData);
   const [loading, setLoading] = useState(true);
+
+  // Subscribe to server-side vault prices (updated by edge function every minute)
+  useEffect(() => {
+    const applyPrices = (rows: { vault_id: string; unit_price: number }[]) => {
+      setVaults((prev) => prev.map((v) => {
+        const row = rows.find((r) => r.vault_id === v.id);
+        return row ? { ...v, unitPrice: Number(row.unit_price) } : v;
+      }));
+    };
+
+    supabase.from('vault_prices').select('vault_id, unit_price').then(({ data }) => {
+      if (data && data.length > 0) applyPrices(data);
+    });
+
+    const channel = supabase
+      .channel('vault-prices-public')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'vault_prices' },
+        (payload) => {
+          const row = (payload.new ?? payload.old) as { vault_id?: string; unit_price?: number };
+          if (!row?.vault_id || row.unit_price === undefined) return;
+          setVaults((prev) => prev.map((v) =>
+            v.id === row.vault_id ? { ...v, unitPrice: Number(row.unit_price) } : v
+          ));
+        })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
   // Load + subscribe to per-user data
   useEffect(() => {
