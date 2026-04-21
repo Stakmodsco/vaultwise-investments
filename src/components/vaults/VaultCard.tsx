@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Shield, Flame, Gem, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Vault, getRiskColor, getRiskBgColor, formatCurrency } from '@/lib/vaults';
 import { getVaultAccent, getVaultIcon3DVariant } from '@/lib/vault-colors';
+import { usePortfolio } from '@/lib/portfolio-context';
 import { Area, AreaChart, ResponsiveContainer } from 'recharts';
 import Icon3D from '@/components/ui/Icon3D';
 
@@ -11,6 +13,16 @@ const vaultIconMap: Record<string, typeof Shield> = {
   'alpha-aggressive': Flame,
   'stable-yield': Gem,
   'momentum-trader': Zap,
+};
+
+const formatAgo = (date?: Date): string => {
+  if (!date) return 'syncing…';
+  const sec = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+  if (sec < 60) return `${sec}s ago`;
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min / 60);
+  return `${hr}h ago`;
 };
 
 interface VaultCardProps {
@@ -24,6 +36,16 @@ const VaultCard = ({ vault, index }: VaultCardProps) => {
   const accent = getVaultAccent(vault.id);
   const IconComp = vaultIconMap[vault.id] || Shield;
   const icon3DVariant = getVaultIcon3DVariant(vault.id);
+  const { priceUpdatedAt } = usePortfolio();
+  const updatedAt = priceUpdatedAt[vault.id];
+  const [, setTick] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setTick((n) => n + 1), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const isFresh = updatedAt && Date.now() - updatedAt.getTime() < 90_000;
 
   return (
     <motion.div
@@ -87,8 +109,16 @@ const VaultCard = ({ vault, index }: VaultCardProps) => {
               </div>
             </div>
 
+            <div className="mt-4 flex items-center gap-1.5 text-[10px] text-muted-foreground">
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${isFresh ? 'bg-emerald-400 animate-pulse' : 'bg-muted-foreground/40'}`}
+                aria-hidden
+              />
+              <span>Price updated {formatAgo(updatedAt)}</span>
+            </div>
+
             <button
-              className="mt-5 w-full rounded-xl bg-primary/10 py-2.5 text-sm font-semibold text-primary transition-all duration-200 group-hover:bg-primary group-hover:text-primary-foreground"
+              className="mt-3 w-full rounded-xl bg-primary/10 py-2.5 text-sm font-semibold text-primary transition-all duration-200 group-hover:bg-primary group-hover:text-primary-foreground"
             >
               Invest
             </button>

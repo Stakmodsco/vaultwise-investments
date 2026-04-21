@@ -24,6 +24,7 @@ interface PortfolioContextType {
   investments: Investment[];
   transactions: Transaction[];
   vaults: Vault[];
+  priceUpdatedAt: Record<string, Date>;
   loading: boolean;
   deposit: (amount: number) => Promise<void>;
   invest: (vaultId: string, amount: number) => Promise<void>;
@@ -43,19 +44,18 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [vaults, setVaults] = useState<Vault[]>(vaultData);
+  const [priceUpdatedAt, setPriceUpdatedAt] = useState<Record<string, Date>>({});
   const [loading, setLoading] = useState(true);
 
   // Subscribe to server-side vault prices (updated by edge function every minute)
   useEffect(() => {
-    const applyPrices = (rows: { vault_id: string; unit_price: number }[]) => {
+    supabase.from('vault_prices').select('vault_id, unit_price, updated_at').then(({ data }) => {
+      if (!data) return;
       setVaults((prev) => prev.map((v) => {
-        const row = rows.find((r) => r.vault_id === v.id);
+        const row = data.find((r) => r.vault_id === v.id);
         return row ? { ...v, unitPrice: Number(row.unit_price) } : v;
       }));
-    };
-
-    supabase.from('vault_prices').select('vault_id, unit_price').then(({ data }) => {
-      if (data && data.length > 0) applyPrices(data);
+      setPriceUpdatedAt(Object.fromEntries(data.map((r) => [r.vault_id, new Date(r.updated_at)])));
     });
 
     const channel = supabase
@@ -63,11 +63,14 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
       .on('postgres_changes',
         { event: '*', schema: 'public', table: 'vault_prices' },
         (payload) => {
-          const row = (payload.new ?? payload.old) as { vault_id?: string; unit_price?: number };
+          const row = (payload.new ?? payload.old) as { vault_id?: string; unit_price?: number; updated_at?: string };
           if (!row?.vault_id || row.unit_price === undefined) return;
           setVaults((prev) => prev.map((v) =>
             v.id === row.vault_id ? { ...v, unitPrice: Number(row.unit_price) } : v
           ));
+          if (row.updated_at) {
+            setPriceUpdatedAt((prev) => ({ ...prev, [row.vault_id!]: new Date(row.updated_at!) }));
+          }
         })
       .subscribe();
 
@@ -281,7 +284,7 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
   return (
     <PortfolioContext.Provider
       value={{
-        balance, investments, transactions, vaults, loading,
+        balance, investments, transactions, vaults, priceUpdatedAt, loading,
         deposit, invest, withdraw, reset, getInvestmentValue,
         getTotalInvested, getTotalValue, getTotalPnL,
       }}
