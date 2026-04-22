@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { Bell, User, LayoutDashboard, Vault, Wallet, Trophy, Settings, RefreshCw, LogOut } from 'lucide-react';
+import { Bell, User, LayoutDashboard, Vault, Wallet, Trophy, Settings, RefreshCw, LogOut, ArrowDownToLine, ArrowUpFromLine, Gift, MessageCircle, ShieldCheck, Crown } from 'lucide-react';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { useNotifications, formatRelative, variantIcon } from '@/lib/notifications-context';
 import { useAuth } from '@/lib/auth-context';
 import { useProfile } from '@/lib/profile-context';
+import { useRole } from '@/lib/role-context';
 import { formatUSD } from '@/lib/vaults';
 import vaultxLogo from '@/assets/vaultx-logo.png';
 import CryptoTicker from './CryptoTicker';
@@ -26,6 +27,7 @@ const Navbar = () => {
   const { notifications, unreadCount, markAllRead } = useNotifications();
   const { user, signOut } = useAuth();
   const { profile } = useProfile();
+  const { isAdmin } = useRole();
   const isLanding = location.pathname === '/';
   const isAuthRoute = location.pathname === '/auth';
 
