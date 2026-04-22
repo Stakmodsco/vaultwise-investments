@@ -82,7 +82,38 @@ export const vaults: Vault[] = [
     color: 'from-yellow-500/20 to-amber-500/20',
     performanceData: generatePerformanceData(21.8, 3),
   },
+  {
+    id: 'waxp-yield',
+    name: 'WaxP Yield',
+    description: 'Steady accumulation of WAX (WaxP) — a low-volatility utility coin powering NFT and gaming ecosystems.',
+    focus: 'WAX (WaxP), NFT Infra',
+    risk: 'low',
+    riskLabel: 'Low Risk',
+    roi: 8.6,
+    tvl: 6800000,
+    unitPrice: 1.086,
+    icon: '🪙',
+    color: 'from-indigo-500/20 to-violet-500/20',
+    performanceData: generatePerformanceData(8.6, 1.2),
+  },
+  {
+    id: 'hive-stable',
+    name: 'Hive Stable',
+    description: 'Conservative exposure to HIVE — a decentralized social blockchain with consistent on-chain rewards.',
+    focus: 'HIVE, Social DPoS',
+    risk: 'low',
+    riskLabel: 'Low Risk',
+    roi: 7.9,
+    tvl: 5400000,
+    unitPrice: 1.079,
+    icon: '🐝',
+    color: 'from-amber-500/20 to-yellow-500/20',
+    performanceData: generatePerformanceData(7.9, 1.1),
+  },
 ];
+
+export const WITHDRAWAL_PERIOD_HOURS = 72;
+export const MAX_KYC_ATTEMPTS = 3;
 
 export const getRiskColor = (risk: RiskLevel): string => {
   const colors: Record<RiskLevel, string> = {
