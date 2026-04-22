@@ -14,6 +14,132 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_status: {
+        Row: {
+          blacklist_reason: string | null
+          failed_kyc_attempts: number
+          kyc_status: Database["public"]["Enums"]["kyc_state"]
+          locked_at: string | null
+          status: Database["public"]["Enums"]["account_state"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blacklist_reason?: string | null
+          failed_kyc_attempts?: number
+          kyc_status?: Database["public"]["Enums"]["kyc_state"]
+          locked_at?: string | null
+          status?: Database["public"]["Enums"]["account_state"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blacklist_reason?: string | null
+          failed_kyc_attempts?: number
+          kyc_status?: Database["public"]["Enums"]["kyc_state"]
+          locked_at?: string | null
+          status?: Database["public"]["Enums"]["account_state"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      deposit_requests: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          method: Database["public"]["Enums"]["payment_method"]
+          proof_path: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["deposit_state"]
+          tx_hash: string | null
+          user_id: string
+          wallet_address: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          created_at?: string
+          currency: string
+          id?: string
+          method: Database["public"]["Enums"]["payment_method"]
+          proof_path?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["deposit_state"]
+          tx_hash?: string | null
+          user_id: string
+          wallet_address?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          proof_path?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["deposit_state"]
+          tx_hash?: string | null
+          user_id?: string
+          wallet_address?: string | null
+        }
+        Relationships: []
+      }
+      gift_card_exchanges: {
+        Row: {
+          admin_notes: string | null
+          brand: string
+          card_code: string
+          card_value: number
+          created_at: string
+          id: string
+          payout_amount: number
+          payout_pct: number
+          proof_path: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["gift_card_state"]
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          brand: string
+          card_code: string
+          card_value: number
+          created_at?: string
+          id?: string
+          payout_amount: number
+          payout_pct?: number
+          proof_path?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["gift_card_state"]
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          brand?: string
+          card_code?: string
+          card_value?: number
+          created_at?: string
+          id?: string
+          payout_amount?: number
+          payout_pct?: number
+          proof_path?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["gift_card_state"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       investments: {
         Row: {
           id: string
@@ -41,6 +167,48 @@ export type Database = {
           updated_at?: string
           user_id?: string
           vault_id?: string
+        }
+        Relationships: []
+      }
+      kyc_submissions: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          doc_type: string
+          full_name: string
+          id: string
+          id_doc_path: string
+          proof_of_funds_path: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["kyc_state"]
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          doc_type: string
+          full_name: string
+          id?: string
+          id_doc_path: string
+          proof_of_funds_path: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["kyc_state"]
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          doc_type?: string
+          full_name?: string
+          id?: string
+          id_doc_path?: string
+          proof_of_funds_path?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["kyc_state"]
+          user_id?: string
         }
         Relationships: []
       }
@@ -80,6 +248,36 @@ export type Database = {
           variant?: string
           vault_id?: string | null
           vault_name?: string | null
+        }
+        Relationships: []
+      }
+      payment_wallets: {
+        Row: {
+          active: boolean
+          address: string
+          created_at: string
+          currency: string
+          id: string
+          memo: string | null
+          network: string
+        }
+        Insert: {
+          active?: boolean
+          address: string
+          created_at?: string
+          currency: string
+          id?: string
+          memo?: string | null
+          network: string
+        }
+        Update: {
+          active?: boolean
+          address?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          memo?: string | null
+          network?: string
         }
         Relationships: []
       }
@@ -134,6 +332,30 @@ export type Database = {
         }
         Relationships: []
       }
+      support_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number
@@ -161,6 +383,33 @@ export type Database = {
           user_id?: string
           vault_id?: string | null
           vault_name?: string | null
+        }
+        Relationships: []
+      }
+      user_2fa: {
+        Row: {
+          backup_codes: string[] | null
+          created_at: string
+          enabled: boolean
+          secret: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          backup_codes?: string[] | null
+          created_at?: string
+          enabled?: boolean
+          secret: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          backup_codes?: string[] | null
+          created_at?: string
+          enabled?: boolean
+          secret?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -194,6 +443,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       vault_prices: {
         Row: {
           previous_price: number
@@ -215,15 +485,66 @@ export type Database = {
         }
         Relationships: []
       }
+      withdrawal_requests: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          completes_at: string
+          destination: string
+          id: string
+          processed_at: string | null
+          requested_at: string
+          status: Database["public"]["Enums"]["withdrawal_state"]
+          user_id: string
+          vault_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          completes_at?: string
+          destination: string
+          id?: string
+          processed_at?: string | null
+          requested_at?: string
+          status?: Database["public"]["Enums"]["withdrawal_state"]
+          user_id: string
+          vault_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          completes_at?: string
+          destination?: string
+          id?: string
+          processed_at?: string | null
+          requested_at?: string
+          status?: Database["public"]["Enums"]["withdrawal_state"]
+          user_id?: string
+          vault_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      account_state: "active" | "locked" | "blacklisted"
+      app_role: "admin" | "user"
+      deposit_state: "pending" | "approved" | "rejected"
+      gift_card_state: "pending" | "approved" | "rejected"
+      kyc_state: "not_submitted" | "pending" | "approved" | "rejected"
+      payment_method: "crypto" | "card"
+      withdrawal_state: "pending" | "approved" | "rejected" | "completed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -350,6 +671,14 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      account_state: ["active", "locked", "blacklisted"],
+      app_role: ["admin", "user"],
+      deposit_state: ["pending", "approved", "rejected"],
+      gift_card_state: ["pending", "approved", "rejected"],
+      kyc_state: ["not_submitted", "pending", "approved", "rejected"],
+      payment_method: ["crypto", "card"],
+      withdrawal_state: ["pending", "approved", "rejected", "completed"],
+    },
   },
 } as const

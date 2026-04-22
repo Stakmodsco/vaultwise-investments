@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { Bell, User, LayoutDashboard, Vault, Wallet, Trophy, Settings, RefreshCw, LogOut } from 'lucide-react';
+import { Bell, User, LayoutDashboard, Vault, Wallet, Trophy, Settings, RefreshCw, LogOut, ArrowDownToLine, ArrowUpFromLine, Gift, MessageCircle, ShieldCheck, Crown } from 'lucide-react';
 import { usePortfolio } from '@/lib/portfolio-context';
 import { useNotifications, formatRelative, variantIcon } from '@/lib/notifications-context';
 import { useAuth } from '@/lib/auth-context';
 import { useProfile } from '@/lib/profile-context';
+import { useRole } from '@/lib/role-context';
 import { formatUSD } from '@/lib/vaults';
 import vaultxLogo from '@/assets/vaultx-logo.png';
 import CryptoTicker from './CryptoTicker';
@@ -26,6 +27,7 @@ const Navbar = () => {
   const { notifications, unreadCount, markAllRead } = useNotifications();
   const { user, signOut } = useAuth();
   const { profile } = useProfile();
+  const { isAdmin } = useRole();
   const isLanding = location.pathname === '/';
   const isAuthRoute = location.pathname === '/auth';
 
@@ -186,20 +188,28 @@ const Navbar = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild className="cursor-pointer">
-                      <Link to="/profile">
-                        <User size={14} className="mr-2" /> Profile
-                      </Link>
+                      <Link to="/profile"><User size={14} className="mr-2" /> Profile</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="cursor-pointer">
-                      <Link to="/leaderboard">
-                        <Trophy size={14} className="mr-2" /> My Rank
-                      </Link>
+                      <Link to="/deposit"><ArrowDownToLine size={14} className="mr-2" /> Deposit</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="cursor-pointer">
-                      <Link to="/profile">
-                        <Settings size={14} className="mr-2" /> Settings
-                      </Link>
+                      <Link to="/withdraw"><ArrowUpFromLine size={14} className="mr-2" /> Withdraw</Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link to="/gift-cards"><Gift size={14} className="mr-2" /> Gift Cards</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link to="/security"><ShieldCheck size={14} className="mr-2" /> Security (2FA)</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link to="/support"><MessageCircle size={14} className="mr-2" /> Support</Link>
+                    </DropdownMenuItem>
+                    {isAdmin && (
+                      <DropdownMenuItem asChild className="cursor-pointer">
+                        <Link to="/admin"><Crown size={14} className="mr-2" /> Admin</Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem className="cursor-pointer" onClick={handleReset}>
                       <RefreshCw size={14} className="mr-2" /> Reset Portfolio
                     </DropdownMenuItem>

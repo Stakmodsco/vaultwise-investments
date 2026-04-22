@@ -9,9 +9,13 @@ import { ProfileProvider } from "@/lib/profile-context";
 import { PreferencesProvider } from "@/lib/preferences-context";
 import { PortfolioProvider } from "@/lib/portfolio-context";
 import { NotificationsProvider } from "@/lib/notifications-context";
+import { AccountStatusProvider } from "@/lib/account-status-context";
+import { RoleProvider } from "@/lib/role-context";
 import AchievementWatcher from "@/lib/AchievementWatcher";
 import RequireAuth from "@/components/auth/RequireAuth";
+import RequireAdmin from "@/components/auth/RequireAdmin";
 import PageTransition from "@/components/layout/PageTransition";
+import AccountStatusBanner from "@/components/layout/AccountStatusBanner";
 import Index from "./pages/Index.tsx";
 import Auth from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
@@ -21,10 +25,15 @@ import VaultDetail from "./pages/VaultDetail.tsx";
 import Leaderboard from "./pages/Leaderboard.tsx";
 import Profile from "./pages/Profile.tsx";
 import Notifications from "./pages/Notifications.tsx";
+import Deposit from "./pages/Deposit.tsx";
+import Withdraw from "./pages/Withdraw.tsx";
+import GiftCards from "./pages/GiftCards.tsx";
+import Support from "./pages/Support.tsx";
+import Security from "./pages/Security.tsx";
+import Admin from "./pages/Admin.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
-
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -40,6 +49,12 @@ const AnimatedRoutes = () => {
         <Route path="/leaderboard" element={<RequireAuth><PageTransition><Leaderboard /></PageTransition></RequireAuth>} />
         <Route path="/profile" element={<RequireAuth><PageTransition><Profile /></PageTransition></RequireAuth>} />
         <Route path="/notifications" element={<RequireAuth><PageTransition><Notifications /></PageTransition></RequireAuth>} />
+        <Route path="/deposit" element={<RequireAuth><PageTransition><Deposit /></PageTransition></RequireAuth>} />
+        <Route path="/withdraw" element={<RequireAuth><PageTransition><Withdraw /></PageTransition></RequireAuth>} />
+        <Route path="/gift-cards" element={<RequireAuth><PageTransition><GiftCards /></PageTransition></RequireAuth>} />
+        <Route path="/support" element={<RequireAuth><PageTransition><Support /></PageTransition></RequireAuth>} />
+        <Route path="/security" element={<RequireAuth><PageTransition><Security /></PageTransition></RequireAuth>} />
+        <Route path="/admin" element={<RequireAdmin><PageTransition><Admin /></PageTransition></RequireAdmin>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
@@ -55,10 +70,15 @@ const App = () => (
             <PreferencesProvider>
               <PortfolioProvider>
                 <NotificationsProvider>
-                  <AchievementWatcher />
-                  <Toaster />
-                  <Sonner />
-                  <AnimatedRoutes />
+                  <AccountStatusProvider>
+                    <RoleProvider>
+                      <AchievementWatcher />
+                      <AccountStatusBanner />
+                      <Toaster />
+                      <Sonner />
+                      <AnimatedRoutes />
+                    </RoleProvider>
+                  </AccountStatusProvider>
                 </NotificationsProvider>
               </PortfolioProvider>
             </PreferencesProvider>
